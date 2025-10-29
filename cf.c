@@ -1,64 +1,76 @@
-#include<stdio.h>
-#include<string.h>
-#include<ctype.h>
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+#include <stdlib.h>
 
-#define MAX 50
+#define MAX 20
 
-char operands[MAX][10];
-char operators[MAX];
-int topOpnd = -1, topOp = -1;
+typedef struct {
+    char op;     // operator + - * / =
+    char a[10];  // arg1
+    char b[10];  // arg2
+    char r[10];  // result
+} Quad;
 
-int precedence(char c) {
-        if(c == '+' || c == '-')
-                return 1;
-        if(c == '*' || c == '/')
-                return 2;
-        if(c == '=')
-                return -1;
-        return 0;
+Quad q[MAX];
+int n;
+
+int isnum(char s[]) {
+    for(int i=0; s[i]!='\0'; i++)
+        if(!isdigit(s[i])) return 0;
+    return 1;
 }
 
-void generateICG(char exp[]) {
-        int i = 0, t = 1;
-        char temp[10];
+int eval(char a[], char b[], char op) {
+    int x = atoi(a), y = atoi(b);
+    switch(op) {
+        case '+': return x + y;
+        case '-': return x - y;
+        case '*': return x * y;
+        case '/': return y != 0 ? x / y : 0;
+    }
+    return 0;
+}
 
-        while(exp[i] != '\0') {
-                if(isalnum(exp[i])) {
-                        int j = 0;
-                        while(isalnum(exp[i])) temp[j++] = exp[i++];
-                        temp[j] = '\0';
-                        strcpy(operands[++topOpnd],temp);
-                }
-                else {
-                        while(topOp >= 0 && precedence(operators[topOp]) >= precedence(exp[i])) {
-                                char op = operators[topOp--];
-                                if(op == '=') {
-                                        printf("%s = %s\n",operands[topOpnd-1],operands[topOpnd]);
-                                        topOpnd -= 2;
-                                }
-                                else {
-                                        printf("t%d = %s %c %s\n",t,operands[topOpnd-1],op,operands[topOpnd]);
-                                        sprintf(operands[--topOpnd],"t%d",t++);
-                                }
-                        }
-                        operators[++topOp] = exp[i++];
-                }
+
+void constantFold() {
+    for(int i=0; i<n; i++) {
+        if(isnum(q[i].a) && isnum(q[i].b)) {
+            int val = eval(q[i].a, q[i].b, q[i].op);
+            q[i].op = '=';
+            sprintf(q[i].a, "%d", val);
+            strcpy(q[i].b, "-");
         }
-        while(topOp >= 0) {
-                char op = operators[topOp--];
-                if(op == '=')
-                        printf("%s = %s\n",operands[topOpnd-1],operands[topOpnd]);
-                else {
-                        printf("t%d = %s %c %s\n",t,operands[topOpnd-1],op,operands[topOpnd]);
-                        sprintf(operands[--topOpnd],"t%d",t++);
-                }
+    }
+}
+
+void constantProp() {
+    for(int i=0; i<n; i++) {
+        for(int j=0; j<n; j++) {
+            if(q[j].op=='=' && strcmp(q[i].a,q[j].r)==0)
+                strcpy(q[i].a, q[j].a);
+            if(q[j].op=='=' && strcmp(q[i].b,q[j].r)==0)
+                strcpy(q[i].b, q[j].a);
         }
+    }
 }
 
 int main() {
-        char exp[MAX];
-        printf("Enter infix expression without space: ");
-        scanf("%[^\n]",exp);
-        generateICG(exp);
-        return 0;
+    printf("Enter number of instructions: ");
+    scanf("%d", &n);
+
+    printf("Enter instructions (op a b result):\n");
+    for(int i=0; i<n; i++)
+        scanf(" %c %s %s %s", &q[i].op, q[i].a, q[i].b, q[i].r);
+
+    constantFold();
+    constantProp();
+    constantFold();
+
+    printf("\nOptimized code:\n");
+    printf("OP\tARG1\tARG2\tRES\n");
+    for(int i=0;i<n;i++)
+        printf("%c\t%s\t%s\t%s\n", q[i].op, q[i].a, q[i].b, q[i].r);
+
+    return 0;
 }
