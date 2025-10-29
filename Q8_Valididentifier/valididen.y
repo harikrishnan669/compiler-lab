@@ -1,31 +1,20 @@
 %{
-    #include <stdio.h>
-    int yylex();
-    int yyerror();
+#include<stdio.h>
+int yylex();
+int yyerror();
 %}
-%token id num nl
-%left '+' '-'
-%left '*' '/'
-%left '(' ')'
-
+%token alpha number
 %%
-start : E '\n' {printf("Valid Arithmetic Expression\n"); return 0;}
-E : E '+' E
-  | E '-' E
-  | E '*' E
-  | E '/' E
-  | '('E')'
-  | id
-  | num
+start:S '\n' {printf("Valid identifier\n"); return 0;}
+S : alpha A;
+A : alpha A
+  | number A
+  |
   ;
 %%
-int main()
-{
-    yyparse();
-    return 0;
+int main(){
+	return yyparse();
 }
-int yyerror(char *m)
-{
-    fprintf(stderr, "%s: Invalid Arithmetic Expression\n", m);
-    return 0;
+int yyerror(){
+	printf("Invalid identifier\n");
 }
