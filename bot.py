@@ -5,7 +5,7 @@ import urllib.request
 import urllib.error
 import sys
 
-API_KEY = "AIzaSyCrTygS2Q5O_e_4l7F3H6BGgfMZvUxWngM"
+# API_KEY = "AIzaSyCrTygS2Q5O_e_4l7F3H6BGgfMZvUxWngM"
 
 MODEL_NAME = "gemini-2.5-flash"
 API_URL = f"https://generativelanguage.googleapis.com/v1beta/models/{MODEL_NAME}:generateContent?key={API_KEY}"
