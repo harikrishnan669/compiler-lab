@@ -6,10 +6,10 @@
 #define MAX 20
 
 typedef struct {
-    char op;     // operator + - * / =
-    char a[10];  // arg1
-    char b[10];  // arg2
-    char r[10];  // result
+    char op;     
+    char a[10];  
+    char b[10];  
+    char r[10];  
 } Quad;
 
 Quad q[MAX];
