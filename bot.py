@@ -6,7 +6,7 @@ import urllib.error
 import sys
 
 # API_KEY = "AIzaSyCrTygS2Q5O_e_4l7F3H6BGgfMZvUxWngM"
-
+# AIzaSyAfqxELemA9q8GAg0beAxu0z4C0jWmi_zY     Prabhav API KEY
 MODEL_NAME = "gemini-2.5-flash"
 API_URL = f"https://generativelanguage.googleapis.com/v1beta/models/{MODEL_NAME}:generateContent?key={API_KEY}"
 
