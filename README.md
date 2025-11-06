@@ -9,7 +9,7 @@
 7. Implement a Calculator using LEX and YACC.
 8. Convert the BNF rules into YACC form and write code to generate an abstract syntax tree.
 9. Design and implement a lexical analyzer using C language to recognize all valid tokens in the input program. The lexical analyzer should ignore redundant spaces, tabs, and newlines. It should also ignore comments.
-10. Write a program to find **First and **Follow of any given grammar.
+10. Write a program to find **First** and **Follow** of any given grammar.
 11. Design and implement a **Recursive Descent Parser** for a given grammar.
 12. Construct a **Shift Reduce Parser** for a given language.
 13. Write a program to perform **Constant Propagation**.
